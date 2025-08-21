@@ -30,11 +30,18 @@
         <input id="income" type="number" min="0" placeholder="e.g. 1200000" class="w-full p-3 border border-gray-400 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label class="block font-semibold text-gray-700 mb-1">HRA Exemption (₹)</label>
+          <input id="hra" type="number" min="0" placeholder="e.g. 150000" class="w-full p-3 border border-gray-400 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+        </div>
         <div>
           <label class="block font-semibold text-gray-700 mb-1">80C (₹1.5L max)</label>
           <input id="ded80C" type="number" min="0" placeholder="e.g. 150000" class="w-full p-3 border border-gray-400 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
         </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label class="block font-semibold text-gray-700 mb-1">80D (₹50k max)</label>
           <input id="ded80D" type="number" min="0" placeholder="e.g. 50000" class="w-full p-3 border border-gray-400 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
@@ -58,12 +65,14 @@
       const fy = document.getElementById("fy").value;
       const age = parseInt(document.getElementById("age").value) || 0;
       const income = parseFloat(document.getElementById("income").value) || 0;
+      const hra = Math.min(parseFloat(document.getElementById("hra").value) || 0, income);
       const ded80C = Math.min(parseFloat(document.getElementById("ded80C").value) || 0, 150000);
       const ded80D = Math.min(parseFloat(document.getElementById("ded80D").value) || 0, 50000);
       const ded24B = Math.min(parseFloat(document.getElementById("ded24B").value) || 0, 200000);
       const stdDeduction = 50000;
 
-      let taxableOld = Math.max(income - (ded80C + ded80D + ded24B + stdDeduction), 0);
+      // Old Regime Deductions include HRA, New Regime ignores HRA
+      let taxableOld = Math.max(income - (hra + ded80C + ded80D + ded24B + stdDeduction), 0);
       let taxableNew = Math.max(income - (fy === "2025" ? 75000 : 50000), 0);
 
       const taxOld = computeOldRegimeTax(taxableOld, age);
