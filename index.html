@@ -1,116 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>India Income Tax Calculator — Old vs New Regime</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Income Tax Calculator</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gradient-to-br from-gray-50 to-gray-200 min-h-screen flex items-center justify-center p-6">
-  <div class="w-full max-w-4xl bg-white rounded-2xl shadow-2xl p-8 border border-gray-300">
-    <h1 class="text-3xl font-extrabold mb-2 text-center text-gray-900">India Income Tax Calculator</h1>
-    <p class="text-center text-gray-600 mb-8">Compare Old vs New Regime (FY 2024–25 & 2025–26)</p>
-    
-    <form id="taxForm" class="space-y-6">
+<body class="bg-white text-gray-900 transition-colors duration-500">
+
+  <!-- Calculator Card -->
+  <div class="max-w-2xl mx-auto mt-16 bg-gray-100 dark:bg-gray-900 p-6 rounded-2xl shadow-lg transition-colors duration-500">
+    <h1 class="text-2xl font-bold mb-6 text-center">Income Tax Calculator</h1>
+    <form id="taxForm" class="space-y-4">
+      <!-- Income field -->
       <div>
-        <label class="block font-semibold text-gray-700 mb-1">Financial Year</label>
-        <select id="fy" class="w-full p-3 border border-gray-400 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-          <option value="2024">FY 2024–25 (AY 2025–26)</option>
-          <option value="2025">FY 2025–26 (AY 2026–27)</option>
+        <label class="block font-semibold text-gray-700 dark:text-gray-300 mb-1">Annual Income (₹)</label>
+        <input id="income" type="number" min="0" placeholder="e.g. 1000000"
+          class="w-full p-3 border border-gray-400 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100" />
+      </div>
+
+      <!-- HRA Exemption field -->
+      <div>
+        <label class="block font-semibold text-gray-700 dark:text-gray-300 mb-1">HRA Exemption (₹)</label>
+        <input id="hra" type="number" min="0" placeholder="e.g. 100000"
+          class="w-full p-3 border border-gray-400 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100" />
+      </div>
+
+      <!-- Deductions -->
+      <div>
+        <label class="block font-semibold text-gray-700 dark:text-gray-300 mb-1">Section 80C (₹)</label>
+        <input id="ded80C" type="number" min="0" placeholder="e.g. 150000"
+          class="w-full p-3 border border-gray-400 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100" />
+      </div>
+
+      <div>
+        <label class="block font-semibold text-gray-700 dark:text-gray-300 mb-1">Section 80D (₹)</label>
+        <input id="ded80D" type="number" min="0" placeholder="e.g. 25000"
+          class="w-full p-3 border border-gray-400 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100" />
+      </div>
+
+      <div>
+        <label class="block font-semibold text-gray-700 dark:text-gray-300 mb-1">Section 24B - Home Loan Interest (₹)</label>
+        <input id="ded24B" type="number" min="0" placeholder="e.g. 200000"
+          class="w-full p-3 border border-gray-400 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100" />
+      </div>
+
+      <!-- Age -->
+      <div>
+        <label class="block font-semibold text-gray-700 dark:text-gray-300 mb-1">Age</label>
+        <select id="age" class="w-full p-3 border border-gray-400 rounded-xl dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100">
+          <option value="below60">Below 60</option>
+          <option value="60to80">60 - 80</option>
+          <option value="above80">Above 80</option>
         </select>
       </div>
 
-      <div>
-        <label class="block font-semibold text-gray-700 mb-1">Age</label>
-        <input id="age" type="number" min="18" max="100" placeholder="Enter your age" class="w-full p-3 border border-gray-400 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
-      </div>
-
-      <div>
-        <label class="block font-semibold text-gray-700 mb-1">Annual Income (₹)</label>
-        <input id="income" type="number" min="0" placeholder="e.g. 1200000" class="w-full p-3 border border-gray-400 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div>
-          <label class="block font-semibold text-gray-700 mb-1">80C (₹1.5L max)</label>
-          <input id="ded80C" type="number" min="0" placeholder="e.g. 150000" class="w-full p-3 border border-gray-400 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
-        </div>
-        <div>
-          <label class="block font-semibold text-gray-700 mb-1">80D (₹50k max)</label>
-          <input id="ded80D" type="number" min="0" placeholder="e.g. 50000" class="w-full p-3 border border-gray-400 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
-        </div>
-        <div>
-          <label class="block font-semibold text-gray-700 mb-1">Home Loan Interest (₹2L max)</label>
-          <input id="ded24B" type="number" min="0" placeholder="e.g. 200000" class="w-full p-3 border border-gray-400 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
-        </div>
-      </div>
-
-      <div class="flex justify-center">
-        <button type="button" onclick="calculateTax()" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl shadow-lg transition">Calculate Tax</button>
-      </div>
+      <button type="submit" class="w-full py-3 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 transition">Calculate Tax</button>
     </form>
 
-    <div id="result" class="mt-8 p-6 bg-gray-50 border border-gray-300 rounded-xl hidden"></div>
+    <!-- Result section -->
+    <div id="result" class="mt-6 p-4 rounded-xl bg-white dark:bg-gray-800 shadow-md hidden"></div>
   </div>
 
   <script>
-    function calculateTax() {
-      const fy = document.getElementById("fy").value;
-      const age = parseInt(document.getElementById("age").value) || 0;
+    const toggleBtn = document.getElementById("theme-toggle");
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    let savedTheme = localStorage.getItem("theme");
+    if (!savedTheme) savedTheme = prefersDark ? "dark" : "light";
+    applyTheme(savedTheme);
+
+    toggleBtn.addEventListener("click", () => {
+      const currentTheme = document.documentElement.classList.contains("dark") ? "dark" : "light";
+      const newTheme = currentTheme === "dark" ? "light" : "dark";
+      localStorage.setItem("theme", newTheme);
+      applyTheme(newTheme);
+    });
+
+    function applyTheme(theme) {
+      if (theme === "dark") {
+        document.documentElement.classList.add("dark");
+        toggleBtn.textContent = "☀️";
+      } else {
+        document.documentElement.classList.remove("dark");
+        toggleBtn.textContent = "🌙";
+      }
+    }
+
+    // Tax calculation
+    document.getElementById("taxForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
       const income = parseFloat(document.getElementById("income").value) || 0;
-      const ded80C = Math.min(parseFloat(document.getElementById("ded80C").value) || 0, 150000);
-      const ded80D = Math.min(parseFloat(document.getElementById("ded80D").value) || 0, 50000);
-      const ded24B = Math.min(parseFloat(document.getElementById("ded24B").value) || 0, 200000);
-      const stdDeduction = 50000;
+      const hra = parseFloat(document.getElementById("hra").value) || 0;
+      const ded80C = parseFloat(document.getElementById("ded80C").value) || 0;
+      const ded80D = parseFloat(document.getElementById("ded80D").value) || 0;
+      const ded24B = parseFloat(document.getElementById("ded24B").value) || 0;
+      const age = document.getElementById("age").value;
 
-      let taxableOld = Math.max(income - (ded80C + ded80D + ded24B + stdDeduction), 0);
-      let taxableNew = Math.max(income - (fy === "2025" ? 75000 : 50000), 0);
+      const stdDeduction = 50000; // Standard deduction
 
-      const taxOld = computeOldRegimeTax(taxableOld, age);
-      const taxNew = computeNewRegimeTax(taxableNew, fy);
+      // Taxable income under old regime (deductions allowed)
+      let taxableOld = Math.max(income - (hra + ded80C + ded80D + ded24B + stdDeduction), 0);
+      let taxOld = calculateOldRegimeTax(taxableOld, age);
 
-      document.getElementById("result").innerHTML = `
-        <h2 class='text-xl font-bold mb-3 text-gray-800'>Results</h2>
-        <p><strong>Old Regime Tax:</strong> ₹${taxOld.toLocaleString()}</p>
-        <p><strong>New Regime Tax:</strong> ₹${taxNew.toLocaleString()}</p>
-        <p class='mt-3 font-semibold text-${taxOld < taxNew ? 'green' : 'blue'}-600'>
-          ${taxOld < taxNew ? "Old Regime is better" : "New Regime is better"}
-        </p>`;
+      // Taxable income under new regime (no deductions)
+      let taxableNew = Math.max(income - stdDeduction, 0);
+      let taxNew = calculateNewRegimeTax(taxableNew);
+
       document.getElementById("result").classList.remove("hidden");
+      document.getElementById("result").innerHTML = `
+        <h2 class="text-xl font-semibold mb-2">Results</h2>
+        <p><strong>Old Regime Taxable Income:</strong> ₹${taxableOld.toLocaleString()}</p>
+        <p><strong>Old Regime Tax:</strong> ₹${taxOld.toLocaleString()}</p>
+        <p><strong>New Regime Taxable Income:</strong> ₹${taxableNew.toLocaleString()}</p>
+        <p><strong>New Regime Tax:</strong> ₹${taxNew.toLocaleString()}</p>
+      `;
+    });
+
+    // Old regime slabs
+    function calculateOldRegimeTax(income, age) {
+      let tax = 0;
+      if (age === "below60") {
+        if (income > 250000) tax += Math.min(income - 250000, 250000) * 0.05;
+        if (income > 500000) tax += Math.min(income - 500000, 500000) * 0.2;
+        if (income > 1000000) tax += (income - 1000000) * 0.3;
+      } else if (age === "60to80") {
+        if (income > 300000) tax += Math.min(income - 300000, 200000) * 0.05;
+        if (income > 500000) tax += Math.min(income - 500000, 500000) * 0.2;
+        if (income > 1000000) tax += (income - 1000000) * 0.3;
+      } else {
+        if (income > 500000) tax += Math.min(income - 500000, 500000) * 0.2;
+        if (income > 1000000) tax += (income - 1000000) * 0.3;
+      }
+      return tax;
     }
 
-    function computeOldRegimeTax(taxable, age) {
-      let slabs = age >= 60 ? [300000, 500000, 1000000] : [250000, 500000, 1000000];
-      let rates = [0.05, 0.2, 0.3];
-      let tax = 0, prev = 0;
-      for (let i = 0; i < slabs.length; i++) {
-        if (taxable > slabs[i]) {
-          tax += (slabs[i] - prev) * rates[i];
-          prev = slabs[i];
-        } else {
-          tax += (taxable - prev) * rates[i];
-          return Math.round(tax * 1.04);
-        }
-      }
-      tax += (taxable - prev) * 0.3;
-      return Math.round(tax * 1.04);
-    }
-
-    function computeNewRegimeTax(taxable, fy) {
-      let slabs = fy === "2025" ? [400000, 800000, 1200000, 1600000] : [300000, 600000, 900000, 1200000, 1500000];
-      let rates = fy === "2025" ? [0.05, 0.1, 0.15, 0.2, 0.3] : [0.05, 0.1, 0.15, 0.2, 0.3];
-      let tax = 0, prev = 0;
-      for (let i = 0; i < slabs.length; i++) {
-        if (taxable > slabs[i]) {
-          tax += (slabs[i] - prev) * rates[i];
-          prev = slabs[i];
-        } else {
-          tax += (taxable - prev) * rates[i];
-          return Math.round(tax * 1.04);
-        }
-      }
-      tax += (taxable - prev) * 0.3;
-      return Math.round(tax * 1.04);
+    // New regime slabs (FY 2025–26)
+    function calculateNewRegimeTax(income) {
+      let tax = 0;
+      if (income > 300000) tax += Math.min(income - 300000, 300000) * 0.05;
+      if (income > 600000) tax += Math.min(income - 600000, 300000) * 0.1;
+      if (income > 900000) tax += Math.min(income - 900000, 300000) * 0.15;
+      if (income > 1200000) tax += Math.min(income - 1200000, 300000) * 0.2;
+      if (income > 1500000) tax += (income - 1500000) * 0.3;
+      return tax;
     }
   </script>
 </body>
